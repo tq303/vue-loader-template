@@ -16,9 +16,9 @@ module.exports = {
       path.join(__dirname, 'node_modules')
     ],
     alias: {
-      'vue$': 'vue/dist/vue.common.js',
+      'vue': 'vue/dist/vue.common.js',
+      'downloadjs': 'downloadjs/download.min.js',
       'font-awesome': 'font-awesome/scss/font-awesome.scss',
-      'webpack-fa-font-path': 'font-awesome/fonts',
     }
   },
   module: {
@@ -38,6 +38,12 @@ module.exports = {
             postcss: generateLoaders(['css-loader']),
             sass:    generateLoaders(['css-loader', 'sass-loader?indentedSyntax']),
             scss:    generateLoaders(['css-loader', 'sass-loader']),
+            js: {
+              loader: 'babel-loader',
+              options: {
+                presets: ['es2015']
+              }
+            }
           },
           postcss: [
             require('autoprefixer')({
@@ -49,7 +55,12 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: ['/.src']
+        include: ['/src'],
+        exclude: /node_modules/,
+        query: {
+          presets: ['es2015'],
+          plugins: ['transform-runtime']
+        }
       },
       // {
       //   test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
